@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}
+Iniciar sesi&oacute;n
+{% endblock %}
+
+{% block content %}
+
+<section class="mx-auto max-w-md rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+    <div class="mb-6">
+        <p class="text-sm font-medium uppercase tracking-wide text-slate-500">Acceso</p>
+        <h1 class="mt-2 text-2xl font-semibold text-slate-950">Iniciar sesi&oacute;n</h1>
+    </div>
+
+    {% if form.errors %}
+        <p class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            Usuario o contrase&ntilde;a inv&aacute;lidos.
+        </p>
+    {% endif %}
+
+    <form method="post" class="space-y-5">
+
+        {% csrf_token %}
+
+        <div>
+            <label for="{{ form.username.id_for_label }}" class="mb-2 block text-sm font-medium text-slate-700">
+                Usuario
+            </label>
+            <input
+                type="text"
+                name="{{ form.username.html_name }}"
+                id="{{ form.username.id_for_label }}"
+                required
+                autofocus
+                class="block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+            >
+        </div>
+
+        <div>
+            <label for="{{ form.password.id_for_label }}" class="mb-2 block text-sm font-medium text-slate-700">
+                Contrase&ntilde;a
+            </label>
+            <input
+                type="password"
+                name="{{ form.password.html_name }}"
+                id="{{ form.password.id_for_label }}"
+                required
+                class="block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+            >
+        </div>
+
+        <button type="submit" class="w-full rounded-md bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">
+            Entrar
+        </button>
+
+    </form>
+</section>
+
+{% endblock %}
