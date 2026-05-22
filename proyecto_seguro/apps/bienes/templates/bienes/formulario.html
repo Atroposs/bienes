@@ -22,10 +22,6 @@ Registrar bien
                     <h3 class="text-sm font-medium text-red-800">Errores en el formulario</h3>
                     <div class="mt-2 text-sm text-red-700">
                         {{ form.non_field_errors }}
-                <div class="flex-shrink-0">
-                    <h3 class="text-sm font-bold text-red-800">Atenci&oacute;n:</h3>
-                    <div class="mt-1 text-sm text-red-700">
-                        {{ form.non_field_errors|unordered_list }}
                     </div>
                 </div>
             </div>
@@ -39,16 +35,12 @@ Registrar bien
             </label>
             <div class="mt-2">
                 {{ field }}
-            </div>
-            {% if field.errors %}
-            <div class="mt-1">
                 {% if field.errors %}
                 <p class="mt-2 text-sm text-red-600">
                     {{ field.errors.0 }}
                 </p>
                 {% endif %}
             </div>
-            {% endif %}
         </div>
         {% endfor %}
 
