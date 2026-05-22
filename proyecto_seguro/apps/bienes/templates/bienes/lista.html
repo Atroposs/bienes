@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}
-Bienes
+Bienes registrados
 {% endblock %}
 
 {% block content %}
 
 <section class="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
             <p class="text-sm font-medium uppercase tracking-wide text-slate-500">Panel protegido</p>
             <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950">M&oacute;dulo de bienes</h1>
             <p class="mt-3 max-w-2xl text-slate-600">
-                Esta pantalla representa la entrada protegida al m&oacute;dulo de bienes.
+                Administra los bienes registrados en el sistema
             </p>
         </div>
 
@@ -20,6 +20,38 @@ Bienes
             Nuevo bien
         </a>
     </div>
+
+    <div class="overflow-x-auto rounded-md border border-slate-200">
+        <table class="w-full text-left text-sm text-slate-600">
+            <thead class="bg-slate-50 text-xs uppercase text-slate-500">
+                <tr>
+                    <th scope="col" class="px-6 py-3 font-medium">Identificador</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Descripci&oacute;n</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Marca</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Valor</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Estatus</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+                {% for bien in bienes %}
+                <tr class="hover:bg-slate-50">
+                    <td class="whitespace-nowrap px-6 py-4 font-medium text-slate-900">{{ bien.identificador }}</td>
+                    <td class="px-6 py-4">{{ bien.descripcion }}</td>
+                    <td class="px-6 py-4">{{ bien.marca }}</td>
+                    <td class="px-6 py-4">${{ bien.valor }}</td>
+                    <td class="px-6 py-4 capitalize">{{ bien.estatus }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-slate-500">
+                        No hay bienes registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </section>
 
 {% endblock %}

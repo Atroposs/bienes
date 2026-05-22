@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Formulario de bienes
+Registrar bien
 {% endblock %}
 
 {% block content %}
@@ -12,19 +12,55 @@ Formulario de bienes
         <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Formulario de bienes</h1>
     </div>
 
-    <div class="space-y-4 text-slate-600">
-        <p>
-            En esta primera versi&oacute;n, el formulario todav&iacute;a no captura datos del bien.
-        </p>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
 
-        <p>
-            El objetivo es verificar que solo un usuario autenticado pueda acceder a esta pantalla.
-        </p>
-    </div>
+        {% if form.non_field_errors %}
+        <div class="rounded-md bg-red-50 p-4">
+            <div class="flex">
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">Errores en el formulario</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                        {{ form.non_field_errors }}
+                <div class="flex-shrink-0">
+                    <h3 class="text-sm font-bold text-red-800">Atenci&oacute;n:</h3>
+                    <div class="mt-1 text-sm text-red-700">
+                        {{ form.non_field_errors|unordered_list }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
-    <a href="{% url 'bienes:lista' %}" class="mt-8 inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
-        Volver al m&oacute;dulo de bienes
-    </a>
+        {% for field in form %}
+        <div>
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium leading-6 text-slate-900">
+                {{ field.label }}
+            </label>
+            <div class="mt-2">
+                {{ field }}
+            </div>
+            {% if field.errors %}
+            <div class="mt-1">
+                {% if field.errors %}
+                <p class="mt-2 text-sm text-red-600">
+                    {{ field.errors.0 }}
+                </p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="mt-8 flex items-center gap-4">
+            <button type="submit" class="inline-flex items-center justify-center rounded-md bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">
+                Guardar
+            </button>
+            <a href="{% url 'bienes:lista' %}" class="inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                Volver al listado
+            </a>
+        </div>
+    </form>
 </section>
 
 {% endblock %}

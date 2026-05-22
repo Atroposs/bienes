@@ -1,3 +1,19 @@
 from django.db import models
 
-# Create your models here.
+class Bien(models.Model):
+    ESTATUS_CHOICES = [
+        ("bueno", "Bueno"),
+        ("regular", "Regular"),
+        ("malo", "Malo"),
+    ]
+
+    identificador = models.CharField(max_length=20, unique=True)
+    descripcion = models.CharField(max_length=150)
+    marca = models.CharField(max_length=80)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    estatus = models.CharField(max_length=10, choices=ESTATUS_CHOICES)
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.identificador
