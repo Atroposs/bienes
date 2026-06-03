@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Registrar dirección{% endblock %}
+
+{% block content %}
+<h1>Registrar dirección</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar Dirección</button>
+</form>
+<p><a href="{% url 'direcciones:reporte_mis_direcciones' %}">Ver mis direcciones</a></p>
+{% endblock %}
