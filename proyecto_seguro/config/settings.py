@@ -149,7 +149,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "bienes:lista_bienes"
+LOGIN_REDIRECT_URL = "bienes:home_router"
 LOGOUT_REDIRECT_URL = "login"
 
 TOKEN_RASTREO_CAMIONES = "TOKEN_DE_PRACTICA_CAMIONES"

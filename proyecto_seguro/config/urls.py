@@ -15,6 +15,7 @@ urlpatterns = [
         name="logout",
     ),
     path("", include("apps.bienes.urls")),
+    path("clientes/", include("apps.clientes.urls")),
     path("direcciones/", include("apps.direcciones.urls")),
     path("", include("apps.rastreo.urls")),
 ]

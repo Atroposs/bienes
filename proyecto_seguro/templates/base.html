@@ -11,7 +11,7 @@
 <body class="min-h-screen bg-slate-100 text-slate-900">
 
     <header class="border-b border-slate-200 bg-white">
-        <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4">
+        <div class="mx-auto flex w-full items-center justify-between gap-4 px-6 py-4 lg:px-12">
             <a href="{% url 'bienes:lista_bienes' %}" class="text-lg font-semibold tracking-tight text-slate-950">
                 Panel de control
             </a>
@@ -29,11 +29,20 @@
                         </button>
                     </form>
                 </div>
+            {% else %}
+                <div class="flex items-center gap-4">
+                    <!-- <a href="{% url 'login' %}" class="text-sm font-medium text-slate-600 hover:text-slate-950">
+                        Entrar
+                    </a> -->
+                    <a href="{% url 'clientes:registro' %}" class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700">
+                        Registrarse
+                    </a>
+                </div>
             {% endif %}
         </div>
     </header>
 
-    <main class="mx-auto max-w-5xl px-6 py-10">
+    <main class="mx-auto w-full px-6 py-10 lg:px-12">
         {% block content %}
         {% endblock %}
     </main>
