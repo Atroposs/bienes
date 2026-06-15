@@ -1,20 +1,20 @@
 {% extends "base.html" %}
-{% block title %}Panel de Supervisor{% endblock %}
+{% block title %}Panel de Auditor{% endblock %}
 
 {% block content %}
 <div class="w-full space-y-8">
     <!-- Encabezado -->
     <div class="w-full rounded-2xl bg-slate-900 p-8 shadow-lg text-white flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-            <h1 class="text-3xl font-bold">Gestión de Clientes y Bienes</h1>
-            <p class="text-slate-400 mt-2">Selecciona un cliente para auditar sus bienes registrados.</p>
+            <h1 class="text-3xl font-bold">Administración de Auditoría</h1>
+            <p class="text-slate-400 mt-2">Control centralizado de clientes, autorizaciones y activos.</p>
         </div>
         
         <!-- Notificaciones de Solicitudes -->
         <div class="relative">
             <button id="btn-solicitudes" class="group relative flex items-center gap-2 rounded-xl bg-slate-800 px-5 py-3 border border-slate-700 hover:bg-slate-700 transition-all active:scale-95">
                 <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                 </svg>
                 <span class="font-semibold text-sm">Solicitudes</span>
                 {% if clientes_pendientes %}
@@ -37,7 +37,7 @@
                                 <p class="text-sm font-bold text-slate-900">{{ pend.nombre_completo }}</p>
                                 <p class="text-[11px] text-slate-500 font-mono">{{ pend.identificador }}</p>
                             </div>
-                            <form action="{% url 'bienes:autorizar_cliente' pend.id %}" method="post">
+                            <form action="{% url 'clientes:autorizar_cliente' pend.id %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold py-2 rounded-lg transition-all shadow-sm">
                                     Autorizar Acceso
@@ -160,5 +160,4 @@
         }
     });
 </script>
-
 {% endblock %}

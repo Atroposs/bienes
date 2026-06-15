@@ -59,10 +59,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'apps.core',
     'apps.bienes',
     'apps.clientes',
     'apps.direcciones',
     'apps.rastreo',
+    'apps.camiones',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,7 +151,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "bienes:home_router"
+LOGIN_REDIRECT_URL = "core:home_router"
 LOGOUT_REDIRECT_URL = "login"
 
 TOKEN_RASTREO_CAMIONES = "TOKEN_DE_PRACTICA_CAMIONES"
