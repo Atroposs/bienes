@@ -58,7 +58,7 @@
 
         <!-- Tabs de Navegación -->
         <nav class="flex flex-wrap gap-4 border-b border-slate-700">
-            <a href="?tab=viajes" class="{% if tab != 'clientes' %}border-b-2 border-emerald-500 font-bold text-white{% else %}text-slate-400 hover:text-white{% endif %} px-4 py-2 text-sm transition-colors">General (Viajes)</a>
+            <a href="?tab=viajes" class="{% if tab == 'viajes' or not tab %}border-b-2 border-emerald-500 font-bold text-white{% else %}text-slate-400 hover:text-white{% endif %} px-4 py-2 text-sm transition-colors">General (Viajes)</a>
             <a href="?tab=clientes" class="{% if tab == 'clientes' %}border-b-2 border-emerald-500 font-bold text-white{% else %}text-slate-300 hover:text-white hover:bg-slate-800 rounded-t-lg transition-all{% endif %} px-4 py-2 text-sm">Clientes</a>
             <a href="?tab=camiones" class="{% if tab == 'camiones' %}border-b-2 border-emerald-500 font-bold text-white{% else %}text-slate-300 hover:text-white hover:bg-slate-800 rounded-t-lg transition-all{% endif %} px-4 py-2 text-sm">Camiones</a>
             <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 cursor-not-allowed flex items-center gap-2">
@@ -262,72 +262,64 @@
             <table class="w-full text-left">
                 <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-black tracking-widest">
                     <tr class="divide-x divide-slate-200">
-                        <th class="px-6 py-4">Cliente / ID Viaje</th>
-                        <th class="px-6 py-4">Ruta (Origen -> Destino)</th>
-                        <th class="px-6 py-4">Logística (Camión / Chofer)</th>
+                        <th class="px-6 py-4">Cliente / Folio</th>
+                        <th class="px-6 py-4">Trayecto (Origen -> Destino)</th>
+                        <th class="px-6 py-4">Recursos (Camión / Encargado)</th>
                         <th class="px-6 py-4 text-center">Estatus</th>
-                        <th class="px-6 py-4">Salida</th>
+                        <th class="px-6 py-4">Fecha de Mudanza</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     <!-- Ejemplo Representativo 1 -->
                     <tr class="hover:bg-blue-50/40 transition-colors divide-x divide-slate-100">
                         <td class="px-6 py-4">
-                            <div class="font-bold text-slate-900">Logística del Norte S.A.</div>
-                            <div class="text-[10px] text-emerald-600 font-mono font-bold">TRIP-2024-001</div>
+                            <div class="font-bold text-slate-900">Carlos Ruiz (Cliente Reg.)</div>
+                            <div class="text-[10px] text-emerald-600 font-mono font-bold">MUD-2024-001</div>
                         </td>
                         <td class="px-6 py-4 text-sm">
                             <div class="flex items-center gap-2">
-                                <span class="font-medium text-slate-800">Monterrey, NL</span>
+                                <span class="font-medium text-slate-800">Calle Reforma #10</span>
                                 <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                <span class="font-medium text-slate-800">CDMX</span>
+                                <span class="font-medium text-slate-800">Av. Insurgentes #50</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-xs text-slate-600">
-                            <div class="flex items-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path></svg>
-                                Kenworth T680 (PL-902)
-                            </div>
-                            <div class="mt-1 flex items-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                Juan Pérez (ID: 088)
-                            </div>
+                        <td class="px-6 py-4 text-xs text-slate-400">
+                            <span class="italic font-normal tracking-wide flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                Faltante: Sin asignar camión/encargado
+                            </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-blue-700">En Tránsito</span>
+                            <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-blue-700">Por Asignar</span>
                         </td>
                         <td class="px-6 py-4 text-slate-500 text-xs whitespace-nowrap italic">
-                            20/05/2024 08:30
+                            Faltante: Sin fecha
                         </td>
                     </tr>
                     <!-- Ejemplo Representativo 2 -->
                     <tr class="hover:bg-blue-50/40 transition-colors divide-x divide-slate-100">
                         <td class="px-6 py-4">
-                            <div class="font-bold text-slate-900">Distribuidora Occidente</div>
-                            <div class="text-[10px] text-emerald-600 font-mono font-bold">TRIP-2024-002</div>
+                            <div class="font-bold text-slate-900">Ana Lucía Torres (Cliente Reg.)</div>
+                            <div class="text-[10px] text-emerald-600 font-mono font-bold">MUD-2024-002</div>
                         </td>
                         <td class="px-6 py-4 text-sm">
                             <div class="flex items-center gap-2">
-                                <span class="font-medium text-slate-800">Guadalajara, JAL</span>
+                                <span class="font-medium text-slate-800">Calle Independencia #5</span>
                                 <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                <span class="font-medium text-slate-800">Laredo, TX</span>
+                                <span class="font-medium text-slate-800">Residencial Los Pinos</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-xs text-slate-600">
-                            <div class="flex items-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path></svg>
-                                Volvo FH16 (PL-115)
-                            </div>
-                            <div class="mt-1 flex items-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                Maria García (ID: 042)
-                            </div>
+                        <td class="px-6 py-4 text-xs text-slate-400">
+                            <span class="italic font-normal tracking-wide flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                Faltante: Sin asignar camión/encargado
+                            </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-green-700">Entregado</span>
+                            <span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-yellow-700">En Cotización</span>
                         </td>
                         <td class="px-6 py-4 text-slate-500 text-xs whitespace-nowrap italic">
-                            18/05/2024 14:15
+                            Faltante: Sin fecha
                         </td>
                     </tr>
                 </tbody>
