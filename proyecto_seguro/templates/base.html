@@ -1,3 +1,4 @@
+{% load seguridad_tags %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -47,6 +48,58 @@
         {% endblock %}
     </main>
 
-</body>
+    {% if user|is_encargado %}
+    <!-- Modal/Alerta de Permiso de GPS -->
+    <div id="gps-alert" class="hidden fixed bottom-4 right-4 max-w-sm bg-red-50 border-l-4 border-red-500 p-4 rounded shadow-lg z-50">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-red-700 font-bold">Acceso a Ubicación Denegado</p>
+                <p class="text-xs text-red-600 mt-1">Como encargado en ruta, es obligatorio compartir tu ubicación. Por favor, habilita el GPS en tu navegador.</p>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if ("geolocation" in navigator) {
+                const watchId = navigator.geolocation.watchPosition(
+                    function(position) {
+                        document.getElementById('gps-alert').classList.add('hidden');
+                        const data = {
+                            latitud: position.coords.latitude,
+                            longitud: position.coords.longitude
+                        };
+                        
+                        fetch("{% url 'empleados:actualizar_ubicacion' %}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .catch(err => console.error("Error enviando ubicación:", err));
+                    },
+                    function(error) {
+                        console.error("Error GPS:", error);
+                        if(error.code === error.PERMISSION_DENIED) {
+                            document.getElementById('gps-alert').classList.remove('hidden');
+                        }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 10000,
+                        timeout: 10000
+                    }
+                );
+            } else {
+                console.error("Geolocalización no soportada en este navegador.");
+            }
+        });
+    </script>
+    {% endif %}
+
+</body>
 </html>

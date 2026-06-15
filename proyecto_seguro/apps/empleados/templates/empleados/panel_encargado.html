@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de Encargado | Proyecto seguro{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white rounded-lg shadow border border-slate-200 overflow-hidden">
+        <div class="p-6 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+            <div>
+                <h1 class="text-xl font-bold text-slate-900">Bienvenido, {{ user.first_name|default:user.username }}</h1>
+                <p class="text-sm text-slate-500 mt-1">Panel de control de operaciones en ruta</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                <span class="text-sm font-medium text-green-700">Rastreo Activo</span>
+            </div>
+        </div>
+
+        <div class="p-6">
+            {% if empleado %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 rounded p-4 border border-blue-100">
+                    <h3 class="text-xs uppercase tracking-wider font-semibold text-blue-800 mb-2">Tus Datos</h3>
+                    <p class="text-sm text-slate-700"><span class="font-medium">ID:</span> {{ empleado.identificador }}</p>
+                    <p class="text-sm text-slate-700"><span class="font-medium">Nombre:</span> {{ empleado.nombre_completo }}</p>
+                    <p class="text-sm text-slate-700"><span class="font-medium">Teléfono:</span> {{ empleado.telefono }}</p>
+                </div>
+                
+                <div class="bg-slate-50 rounded p-4 border border-slate-100">
+                    <h3 class="text-xs uppercase tracking-wider font-semibold text-slate-800 mb-2">Estado del GPS</h3>
+                    <p class="text-sm text-slate-600 mb-2">Tu ubicación está siendo monitoreada en tiempo real por el sistema central.</p>
+                    <div id="gps-status" class="text-sm font-medium text-amber-600 flex items-center gap-2">
+                        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Obteniendo señal GPS...
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
+                <p class="text-sm text-amber-700 font-medium">Aviso importante</p>
+                <p class="text-xs text-amber-600 mt-1">Tu cuenta tiene el rol de encargado, pero aún no se ha vinculado a un registro de empleado en el sistema. Contacta a un administrador.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Pequeño script para actualizar la UI del estado GPS
+    document.addEventListener('DOMContentLoaded', function() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.watchPosition(
+                function(position) {
+                    const statusEl = document.getElementById('gps-status');
+                    if(statusEl) {
+                        statusEl.className = "text-sm font-medium text-green-600 flex items-center gap-2";
+                        statusEl.innerHTML = `
+                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Ubicación sincronizada
+                        `;
+                    }
+                },
+                function(error) {
+                    const statusEl = document.getElementById('gps-status');
+                    if(statusEl) {
+                        statusEl.className = "text-sm font-medium text-red-600 flex items-center gap-2";
+                        statusEl.innerHTML = `
+                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                            Error o permiso denegado
+                        `;
+                    }
+                }
+            );
+        }
+    });
+</script>
+{% endblock %}

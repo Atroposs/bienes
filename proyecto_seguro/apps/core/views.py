@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from seguridad.decorators import auditor_requerido
-from seguridad.roles import es_cliente, es_auditor
+from seguridad.roles import es_cliente, es_auditor, es_encargado
 from apps.bienes.models import Bien
 from apps.clientes.models import Cliente
 from apps.camiones.models import Camion
@@ -13,6 +13,8 @@ def home_router(request):
         return redirect("core:panel_control_auditor")
     elif es_cliente(request.user):
         return redirect("bienes:reporte_mis_bienes")
+    elif es_encargado(request.user):
+        return redirect("empleados:panel_encargado")
     else:
         return render(request, "error_rol.html")
 
