@@ -60,9 +60,7 @@
         <nav class="flex flex-wrap gap-4 border-b border-slate-700">
             <a href="?tab=viajes" class="{% if tab != 'clientes' %}border-b-2 border-emerald-500 font-bold text-white{% else %}text-slate-400 hover:text-white{% endif %} px-4 py-2 text-sm transition-colors">General (Viajes)</a>
             <a href="?tab=clientes" class="{% if tab == 'clientes' %}border-b-2 border-emerald-500 font-bold text-white{% else %}text-slate-300 hover:text-white hover:bg-slate-800 rounded-t-lg transition-all{% endif %} px-4 py-2 text-sm">Clientes</a>
-            <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 cursor-not-allowed flex items-center gap-2">
-                Camiones <span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded italic">Próximamente</span>
-            </a>
+            <a href="?tab=camiones" class="{% if tab == 'camiones' %}border-b-2 border-emerald-500 font-bold text-white{% else %}text-slate-300 hover:text-white hover:bg-slate-800 rounded-t-lg transition-all{% endif %} px-4 py-2 text-sm">Camiones</a>
             <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 cursor-not-allowed flex items-center gap-2">
                 Encargados <span class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded italic">Próximamente</span>
             </a>
@@ -82,9 +80,9 @@
             <p class="text-sm font-medium text-slate-500">Clientes Activos</p>
             <p class="text-2xl font-bold text-emerald-600 mt-1">{{ total_clientes }}</p>
         </div>
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm opacity-60 grayscale">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
             <p class="text-sm font-medium text-slate-500">Flota Camiones</p>
-            <p class="text-2xl font-bold text-slate-400 mt-1">--</p>
+            <p class="text-2xl font-bold text-slate-900 mt-1">{{ total_camiones }}</p>
         </div>
         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm opacity-60 grayscale">
             <p class="text-sm font-medium text-slate-500">Viajes en curso</p>
@@ -161,6 +159,87 @@
                     <p class="text-sm">Selecciona un cliente para visualizar su inventario.</p>
                 </div>
             {% endif %}
+        </div>
+    </div>
+
+    {% elif tab == 'camiones' %}
+    <!-- Contenido: Administración de Camiones -->
+    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+        <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Flota de Camiones</h2>
+                <p class="text-sm text-slate-500 mt-0.5">Gestión y control del inventario de transporte.</p>
+            </div>
+            <div class="flex gap-2">
+                <a href="{% url 'camiones:crear_camion' %}" class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    Registrar Nuevo Camión
+                </a>
+            </div>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-black tracking-widest">
+                    <tr class="divide-x divide-slate-200">
+                        <th class="px-6 py-4">Placa / ID</th>
+                        <th class="px-6 py-4">Marca y Modelo</th>
+                        <th class="px-6 py-4">Especificaciones</th>
+                        <th class="px-6 py-4 text-center">Estatus</th>
+                        <th class="px-6 py-4 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for camion in camiones %}
+                    <tr class="hover:bg-emerald-50/40 transition-colors divide-x divide-slate-100">
+                        <td class="px-6 py-4">
+                            <div class="text-xs text-blue-600 font-mono font-bold mb-0.5">{{ camion.identificador }}</div>
+                            <div class="font-bold text-slate-900 text-lg uppercase">{{ camion.placa }}</div>
+                            <div class="text-[10px] text-slate-500 font-mono font-bold mt-1">Num. Serie: {{ camion.numero_serie }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-slate-800">{{ camion.marca }} {{ camion.modelo }}</div>
+                            <div class="text-xs text-slate-500 mt-1">Año: {{ camion.anio }}</div>
+                        </td>
+                        <td class="px-6 py-4 text-xs text-slate-600 space-y-1">
+                            <div class="flex items-center gap-1">
+                                <span class="font-bold text-slate-700">Carga:</span> {{ camion.capacidad_carga_kg }} kg
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="font-bold text-slate-700">Kilometraje:</span> {{ camion.kilometraje_actual }} km
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="font-bold text-slate-700">Combustible:</span> <span class="capitalize">{{ camion.get_tipo_combustible_display }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            {% if camion.estado == 'disponible' %}
+                                <span class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-emerald-700">Disponible</span>
+                            {% elif camion.estado == 'en_ruta' %}
+                                <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-blue-700">En Ruta</span>
+                            {% elif camion.estado == 'mantenimiento' %}
+                                <span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-yellow-700">Mantenimiento</span>
+                            {% else %}
+                                <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-red-700">Fuera de Servicio</span>
+                            {% endif %}
+                            
+                            {% if not camion.activo %}
+                                <div class="mt-1 text-[9px] text-red-500 font-bold uppercase">Inactivo</div>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <a href="{% url 'camiones:editar_camion' camion.id %}" class="inline-flex items-center justify-center rounded-md bg-slate-100 p-2 text-slate-500 hover:bg-slate-200 hover:text-blue-600 transition-colors" title="Editar Camión">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">No hay camiones registrados en la flota.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 

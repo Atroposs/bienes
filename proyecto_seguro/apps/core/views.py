@@ -4,6 +4,7 @@ from seguridad.decorators import auditor_requerido
 from seguridad.roles import es_cliente, es_auditor
 from apps.bienes.models import Bien
 from apps.clientes.models import Cliente
+from apps.camiones.models import Camion
 
 @login_required
 def home_router(request):
@@ -24,12 +25,14 @@ def panel_control_auditor(request):
     # Datos base comunes para el panel
     total_bienes = Bien.objects.count()
     total_clientes = Cliente.objects.filter(usuario__is_active=True).count()
+    total_camiones = Camion.objects.count()
     clientes_pendientes = Cliente.objects.filter(usuario__is_active=False).order_by("-creado_en")
 
     context = {
         "tab": tab,
         "total_bienes": total_bienes,
         "total_clientes": total_clientes,
+        "total_camiones": total_camiones,
         "clientes_pendientes": clientes_pendientes,
     }
 
@@ -48,6 +51,9 @@ def panel_control_auditor(request):
             "cliente_seleccionado": cliente_seleccionado,
             "bienes_cliente": bienes_cliente,
         })
+    elif tab == "camiones":
+        camiones = Camion.objects.all().order_by("-creado_en")
+        context["camiones"] = camiones
     else:
         # Vista por defecto: Control de Viajes (representativo)
         bienes = Bien.objects.select_related("cliente").all().order_by("-creado_en")

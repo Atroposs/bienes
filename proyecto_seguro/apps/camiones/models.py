@@ -16,6 +16,7 @@ class Camion(models.Model):
     ]
 
     placa = models.CharField(max_length=20, unique=True)
+    identificador = models.CharField(max_length=20, unique=True, help_text="ID interno estandarizado (ej. CAM-001)")
     marca = models.CharField(max_length=50)
     modelo = models.CharField(max_length=50)
     anio = models.IntegerField(verbose_name="año")

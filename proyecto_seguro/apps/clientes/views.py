@@ -34,4 +34,4 @@ def autorizar_cliente(request, cliente_id):
     """Vista de acción para autorizar a un cliente desde el panel."""
     cliente = autorizar_cliente_usuario(cliente_id)
     messages.success(request, f"La cuenta de {cliente.nombre_completo} ha sido autorizada.")
-    return redirect(f"{reverse('core:panel_control_auditor')}?tab=clientes")
+    return redirect(f"{reverse('bienes:panel_control_auditor')}?tab=clientes")

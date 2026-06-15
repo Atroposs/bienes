@@ -16,6 +16,7 @@ urlpatterns = [
     ),
     path("", include("apps.core.urls")),
     path("bienes/", include("apps.bienes.urls")),
+    path("camiones/", include("apps.camiones.urls")),
     path("clientes/", include("apps.clientes.urls")),
     path("direcciones/", include("apps.direcciones.urls")),
     path("", include("apps.rastreo.urls")),
