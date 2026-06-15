@@ -1,12 +1,64 @@
 {% extends "base.html" %}
-{% block title %}Registrar dirección{% endblock %}
+{% block title %}{% if es_edicion %}Editar{% else %}Registrar{% endif %} dirección{% endblock %}
 
 {% block content %}
-<h1>Registrar dirección</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar Dirección</button>
-</form>
-<p><a href="{% url 'direcciones:reporte_mis_direcciones' %}">Ver mis direcciones</a></p>
+<div class="mx-auto max-w-2xl">
+    <!-- Encabezado -->
+    <div class="mb-8 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 p-8 shadow-lg text-white">
+        <h1 class="text-3xl font-extrabold tracking-tight">{% if es_edicion %}Editar{% else %}Registrar{% endif %} dirección</h1>
+        <p class="mt-2 text-emerald-100 text-sm">Define puntos de origen, destino o resguardo para tu logística.</p>
+    </div>
+
+    <!-- Tarjeta del Formulario -->
+    <div class="rounded-2xl border border-slate-200 bg-white/70 p-8 shadow-xl backdrop-blur-md">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+            <div class="rounded-lg bg-red-50 p-4 border border-red-200">
+                <div class="text-sm text-red-700">{{ form.non_field_errors }}</div>
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                {% for field in form %}
+                <div class="{% if field.name == 'calle' %}sm:col-span-2{% endif %}">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-slate-700 mb-1">
+                        {{ field.label }}
+                    </label>
+                    <div class="relative">
+                        {{ field }}
+                    </div>
+
+                    {% if field.help_text %}
+                        <p class="mt-1 text-xs text-slate-500">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <p class="mt-2 text-sm text-red-600 font-medium flex items-center">
+                            <svg class="mr-1.5 h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                            </svg>
+                            {{ field.errors.0 }}
+                        </p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Botones -->
+            <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-end gap-x-4">
+                <a href="{% url 'direcciones:reporte_mis_direcciones' %}" class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                    Cancelar
+                </a>
+                <button type="submit" class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 transition-all hover:scale-105">
+                    <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Guardar dirección
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
